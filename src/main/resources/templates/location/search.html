@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Поиск</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="shortcut icon" href="image/favicon.svg" type="image/x-icon">
+</head>
+<body>
+<div class="min-vh-100 d-sm-flex flex-column flex-sm-fill ">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">WeatherAPI</a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" th:if="${session.main_user == null}">
+                            <a class="nav-link" href="/login">Авторизация</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.main_user == null}">
+                            <a class="nav-link" href="/registration">Регистрация</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.main_user != null}">
+                            <p style=" display: block; padding: 0.5rem 1rem; color: #ffffff; text-decoration: none; margin-bottom: 0;"
+                               th:text="'Добро пожаловать, ' + ${session.main_user.login}"></p>
+                        </li>
+                        <li class="nav-item" th:if="${session.main_user != null}">
+                            <a class="nav-link" href="/profile">Перейти в профиль</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.main_user != null}">
+                            <form class="d-flex" th:method="DELETE" th:action="@{/logout}">
+                                <button class="btn btn-outline-light" type="submit">Выйти</button>
+                            </form>
+                        </li>
+                    </ul>
+                    <form class="d-flex" th:method="GET" th:action="@{/search}">
+                        <input class="form-control me-2" name="name" type="text" placeholder="Введите город"
+                               aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">Поиск</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row" th:if="${locations.isEmpty()} or ${locations == null}">
+                <div class="col-12 text-center"
+                     style="margin: auto; display: flex; justify-content: center; align-items: center; height: 75vh">
+                    <div class="card card-body justify-content-md-center" style="flex: 0 0 auto">
+                        <div class="form-text" th:text="'Такого города не существует'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 g-3" style="margin-top: auto" th:if="${!locations.isEmpty()}">
+                <div class="col" style="width: 20%" th:each="location : ${locations}">
+                    <div class="card">
+                        <img th:src="'https://openweathermap.org/img/wn/' + ${location.icon} + '@4x.png'"
+                             class="card-img-top" alt="card-grid-image">
+                        <div class="card-body">
+                            <h6 class="card-title" style="text-align: center; margin-bottom: auto;"
+                                th:text="${location.name()} + ', ' + ${location.country()}"></h6>
+                            <p class="card-text text-muted" style="text-align: center"
+                               th:text="${location.state()}"></p>
+                            <p class="card-text" th:text="'Температура: ' + ${location.temperature()} + '°С'"></p>
+                            <p class="card-text text-muted"
+                               th:text="'ощущается: ' + ${location.feelsLike()} + '°С'"></p>
+                            <p class="card-text" th:text="'Погода: ' +${location.weatherDescription()}"></p>
+                            <form class="d-flex" th:method="POST" th:action="@{/search/add}"
+                                  th:if="${session.main_user != null}">
+                                <input type="hidden" name="name" th:value="${location.name()}">
+                                <input type="hidden" name="state" th:value="${location.state()}">
+                                <input type="hidden" name="latitude" th:value="${location.latitude()}">
+                                <input type="hidden" name="longitude" th:value="${location.longitude()}">
+                                <input type="hidden" name="userId" th:value="${session.main_user.id}">
+                                <button class="btn btn-outline-dark" type="submit">Добавить город в профиль</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img src="image/main_content/footer.gif" class="img-thumbnail " alt="weather"
+                         style="width: 60px; height: 60px">
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

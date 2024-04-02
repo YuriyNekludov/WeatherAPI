@@ -1,0 +1,21 @@
+weather:
+  url:
+    coordinates: null
+    cities: null
+  appid: null
+
+spring:
+  cache:
+    type: none
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username:
+    password:
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+  liquibase:
+    enabled: false
