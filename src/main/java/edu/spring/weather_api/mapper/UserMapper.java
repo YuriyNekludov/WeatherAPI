@@ -1,7 +1,7 @@
 package edu.spring.weather_api.mapper;
 
 import edu.spring.weather_api.dto.user.UserDtoReq;
-import edu.spring.weather_api.dto.user.UserDtoResp;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.model.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public UserDtoResp dtoMapFrom(User entity) {
+    public UserDto dtoMapFrom(User entity) {
         if (entity == null)
             return null;
-        return UserDtoResp.builder()
+        return UserDto.builder()
                 .id(entity.getId())
                 .login(entity.getLogin())
                 .build();

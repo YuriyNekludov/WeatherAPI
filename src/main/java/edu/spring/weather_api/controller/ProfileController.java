@@ -1,7 +1,7 @@
 package edu.spring.weather_api.controller;
 
 import edu.spring.weather_api.dto.location.LocationDtoReq;
-import edu.spring.weather_api.dto.user.UserDtoResp;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.service.LocationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
@@ -24,18 +24,18 @@ public class ProfileController {
 
     @GetMapping()
     public String getUserProfile(Model model, HttpServletRequest req) {
-        var user = (UserDtoResp) req.getSession().getAttribute("main_user");
+        var user = (UserDto) req.getSession().getAttribute("main_user");
         if (user == null)
             return "redirect:/";
-        model.addAttribute("locations", locationService.getAllUserLocations(user.id()));
+        model.addAttribute("locations", locationService.getAllUserLocations(user));
         return "profile/profile";
     }
 
     @DeleteMapping("/delete")
     public String removeLocationFromProfile(@ModelAttribute LocationDtoReq userLocation,
                                             HttpServletRequest req) {
-        var user = (UserDtoResp) req.getSession().getAttribute("main_user");
-        locationService.removeLocationFromUser(user.id(), userLocation);
+        var user = (UserDto) req.getSession().getAttribute("main_user");
+        locationService.removeLocationFromUser(user, userLocation);
         return "redirect:/profile";
     }
 }

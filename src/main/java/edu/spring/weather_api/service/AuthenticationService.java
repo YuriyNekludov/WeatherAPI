@@ -1,8 +1,6 @@
 package edu.spring.weather_api.service;
 
-import edu.spring.weather_api.dto.SessionDto;
-import edu.spring.weather_api.mapper.SessionMapper;
-import edu.spring.weather_api.mapper.UserMapper;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.dto.user.UserDtoReq;
 import edu.spring.weather_api.exception.IncorrectPasswordException;
 import edu.spring.weather_api.exception.PasswordMismatchException;
@@ -59,9 +57,9 @@ public class AuthenticationService {
         log.info("User {} was login successfully.", user.getLogin());
     }
 
-    @CacheEvict(value = "users", key = "#id")
-    public void logoutUser(Long id) {
-        var user = userService.getUserById(id);
+    @CacheEvict(value = "users", key = "#userDto.id")
+    public void logoutUser(UserDto userDto) {
+        var user = userService.getUserById(userDto.id());
         if (user.getSession() == null)
             return;
         sessionService.deleteSession(user.getSession());

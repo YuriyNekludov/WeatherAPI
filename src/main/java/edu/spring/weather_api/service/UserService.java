@@ -1,8 +1,6 @@
 package edu.spring.weather_api.service;
 
-import edu.spring.weather_api.dto.user.UserDtoResp;
 import edu.spring.weather_api.exception.UserAlreadyCreatedException;
-import edu.spring.weather_api.mapper.UserMapper;
 import edu.spring.weather_api.repository.UserRepository;
 import edu.spring.weather_api.exception.UserNotFoundException;
 import edu.spring.weather_api.model.User;

@@ -42,6 +42,9 @@ public class AuthenticationServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserMapper userMapper;
+
     final UserDtoReq USER_REQ = new UserDtoReq("testLogin", "123456", "123456");
     final UUID SESSION_ID = UUID.randomUUID();
 
@@ -86,7 +89,7 @@ public class AuthenticationServiceTest {
     void logoutUserShouldBeSuccess() {
         authenticationService.registerUser(USER_REQ, SESSION_ID);
         var user = userRepository.findByLogin(USER_REQ.login()).orElseThrow();
-        authenticationService.logoutUser(user.getId());
+        authenticationService.logoutUser(userMapper.dtoMapFrom(user));
         assertThat(userRepository.findByLogin(USER_REQ.login()).orElse(null).getSession()).isNull();
         assertThat(sessionRepository.findById(SESSION_ID).orElse(null)).isNull();
     }

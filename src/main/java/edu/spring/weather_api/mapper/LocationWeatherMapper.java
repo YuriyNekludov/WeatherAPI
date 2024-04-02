@@ -25,7 +25,6 @@ public class LocationWeatherMapper {
     }
 
     public LocationDtoResp parseJsonObjectToLocationDto(JsonObject jsonObject, CoordinatesDto coordinates) {
-        var coord = jsonObject.getAsJsonObject("coord");
         var weather = jsonObject.getAsJsonArray("weather").get(0).getAsJsonObject();
         var description = weather.get("description").getAsString();
         var icon = weather.get("icon").getAsString();
@@ -33,8 +32,8 @@ public class LocationWeatherMapper {
         var feelsLike = jsonObject.getAsJsonObject("main").get("feels_like").getAsBigDecimal();
         var country = jsonObject.getAsJsonObject("sys").get("country").getAsString();
         return LocationDtoResp.builder()
-                .latitude(coord.get("lat").getAsBigDecimal())
-                .longitude(coord.get("lon").getAsBigDecimal())
+                .latitude(coordinates.latitude())
+                .longitude(coordinates.longitude())
                 .weatherDescription(description)
                 .temperature(temperature)
                 .feelsLike(feelsLike)

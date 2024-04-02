@@ -2,6 +2,7 @@ package edu.spring.weather_api.service;
 
 import edu.spring.weather_api.dto.location.LocationDtoReq;
 import edu.spring.weather_api.dto.location.LocationDtoResp;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.exception.LocationAlreadyAddedException;
 import edu.spring.weather_api.exception.LocationNotFoundException;
 import edu.spring.weather_api.exception.UserNotFoundException;
@@ -48,8 +49,8 @@ public class LocationService {
         }
     }
 
-    public List<LocationDtoResp> getAllUserLocations(Long id) {
-        var locations = locationRepository.findAllByUserId(id);
+    public List<LocationDtoResp> getAllUserLocations(UserDto userDto) {
+        var locations = locationRepository.findAllByUserId(userDto.id());
         if (locations.isEmpty())
             return emptyList();
         return locations.stream()
@@ -59,11 +60,11 @@ public class LocationService {
     }
 
     @Transactional
-    public void removeLocationFromUser(Long id, LocationDtoReq userLocation) {
+    public void removeLocationFromUser(UserDto userDto, LocationDtoReq userLocation) {
         var location = locationRepository.findByLatitudeAndLongitudeAndUserId(
                         userLocation.latitude(),
                         userLocation.longitude(),
-                        id)
+                        userDto.id())
                 .orElseThrow(LocationNotFoundException::new);
         locationRepository.delete(location);
     }

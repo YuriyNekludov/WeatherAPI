@@ -1,6 +1,6 @@
 package edu.spring.weather_api.controller;
 
-import edu.spring.weather_api.dto.user.UserDtoResp;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.service.AuthenticationService;
 import edu.spring.weather_api.dto.user.UserDtoReq;
 import edu.spring.weather_api.util.CookieUtil;
@@ -64,8 +64,8 @@ public class AuthenticationController {
 
     @DeleteMapping("/logout")
     public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
-        var user = (UserDtoResp) req.getSession().getAttribute("main_user");
-        authenticationService.logoutUser(user.id());
+        var userDto = (UserDto) req.getSession().getAttribute("main_user");
+        authenticationService.logoutUser(userDto);
         CookieUtil.clearCookie(req, resp);
         return "redirect:/";
     }

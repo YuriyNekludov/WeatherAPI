@@ -1,6 +1,7 @@
 package edu.spring.weather_api.filter;
 
 import edu.spring.weather_api.dto.SessionDto;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.service.AuthenticationService;
 import edu.spring.weather_api.service.DtoConverterService;
 import edu.spring.weather_api.util.CookieUtil;
@@ -53,12 +54,14 @@ public class SessionValidationFilter implements Filter {
             var sessionDto = dtoConverterService.getSessionDtoById(UUID.fromString(sessionId));
             if (sessionDto != null) {
                 if (isSessionEnded(sessionDto)) {
+                    var userDto = (UserDto) req.getSession().getAttribute("main_user");
+                    authenticationService.logoutUser(userDto);
                     CookieUtil.clearCookie(req, resp);
-                    authenticationService.logoutUser(sessionDto.userId());
                     resp.sendRedirect(req.getContextPath() + "/");
                     return;
                 } else {
-                    req.getSession().setAttribute("main_user", dtoConverterService.getUserDtoById(sessionDto.userId()));
+                    if (req.getSession().getAttribute("main_user") == null)
+                        req.getSession().setAttribute("main_user", dtoConverterService.getUserDtoById(sessionDto.userId()));
                 }
             } else
                 req.getSession().removeAttribute("main_user");

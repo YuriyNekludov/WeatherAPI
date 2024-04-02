@@ -2,7 +2,7 @@ package edu.spring.weather_api.service;
 
 import edu.spring.weather_api.dto.SessionDto;
 import edu.spring.weather_api.dto.user.UserDtoReq;
-import edu.spring.weather_api.dto.user.UserDtoResp;
+import edu.spring.weather_api.dto.user.UserDto;
 import edu.spring.weather_api.mapper.SessionMapper;
 import edu.spring.weather_api.mapper.UserMapper;
 import edu.spring.weather_api.model.User;
@@ -30,7 +30,7 @@ public class DtoConverterService {
     }
 
     @Transactional(readOnly = true)
-    public UserDtoResp getUserDtoById(Long id) {
+    public UserDto getUserDtoById(Long id) {
         return userMapper.dtoMapFrom(userService.getUserById(id));
     }
 
