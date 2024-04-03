@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS users
 (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(128) UNIQUE NOT NULL,
-    password VARCHAR(255)        NOT NULL
+    password VARCHAR(255)        NOT NULL CHECK ( length(password) > 5 )
 );
 
 CREATE INDEX IF NOT EXISTS login_index ON users (login);

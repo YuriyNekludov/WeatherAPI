@@ -37,6 +37,6 @@ spring:
 
 weather:
   url:
-    coordinates: https://api.openweathermap.org/data/2.5/weather
-    cities: http://api.openweathermap.org/geo/1.0/direct
-  appid: 5d396363e327c5e9790d86a1330585c8
+    coordinates: ${WEATHER_URL_COORDINATES}
+    cities: ${WEATHER_URL_CITIES}
+  appid: ${WEATHER_APP_ID}
