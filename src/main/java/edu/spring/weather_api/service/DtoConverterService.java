@@ -22,11 +22,12 @@ public class DtoConverterService {
     SessionService sessionService;
     UserService userService;
     SessionMapper sessionMapper;
+    edu.spring.weather_api.mapper.mapstruct.SessionMapper sessionMapper1;
     UserMapper userMapper;
 
     @Transactional(readOnly = true)
     public SessionDto getSessionDtoById(UUID sessionId) {
-        return sessionMapper.dtoMapFrom(sessionService.getById(sessionId));
+        return sessionMapper1.toDto(sessionService.getById(sessionId));
     }
 
     @Transactional(readOnly = true)
