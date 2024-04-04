@@ -13,7 +13,6 @@ import edu.spring.weather_api.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,8 +53,8 @@ public class LocationService {
         if (locations.isEmpty())
             return emptyList();
         return locations.stream()
-                .map(locationWeatherMapper::coordinatesDtoFromLocation)
-                .map(openWeatherService::getWeatherDataByCoordinates)
+                .map(locationWeatherMapper::locationInfoFromLocation)
+                .map(openWeatherService::getLocationAndWeatherDataByInfo)
                 .toList();
     }
 

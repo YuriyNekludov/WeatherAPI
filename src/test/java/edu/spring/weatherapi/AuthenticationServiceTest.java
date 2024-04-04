@@ -89,7 +89,7 @@ public class AuthenticationServiceTest {
     void logoutUserShouldBeSuccess() {
         authenticationService.registerUser(USER_REQ, SESSION_ID);
         var user = userRepository.findByLogin(USER_REQ.login()).orElseThrow();
-        authenticationService.logoutUser(userMapper.dtoMapFrom(user));
+        authenticationService.logoutUser(userMapper.ToDto(user));
         assertThat(userRepository.findByLogin(USER_REQ.login()).orElse(null).getSession()).isNull();
         assertThat(sessionRepository.findById(SESSION_ID).orElse(null)).isNull();
     }

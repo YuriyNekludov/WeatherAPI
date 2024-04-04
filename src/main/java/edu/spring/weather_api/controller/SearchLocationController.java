@@ -25,7 +25,7 @@ public class SearchLocationController {
 
     @GetMapping()
     public String searchLocationsByName(@RequestParam(value = "name", required = false) String name, Model model) {
-        var locations = openWeatherService.getWeatherDataByCityName(name);
+        var locations = openWeatherService.getLocationAndWeatherDataByName(name);
         model.addAttribute("locations", locations);
         return "location/search";
     }
